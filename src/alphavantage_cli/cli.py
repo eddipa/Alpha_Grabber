@@ -392,8 +392,9 @@ def get_crypto(
 @click.pass_context
 def list_indicators(ctx):
     """List available technical indicators."""
-    client = get_client(ctx)
-    indicators = client.indicators.list_indicators()
+    # This command doesn't need API access - it just lists available indicators
+    from .endpoints.indicators import IndicatorsEndpoint
+    indicators = IndicatorsEndpoint.INDICATORS
     
     click.echo("Available Technical Indicators:")
     click.echo("=" * 50)
