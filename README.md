@@ -1,4 +1,4 @@
-# Alpha Vantage CLI
+# Alpha Grabber
 
 A comprehensive Python package and command-line interface for accessing Alpha Vantage financial market data API.
 
@@ -17,4 +17,4 @@ A comprehensive Python package and command-line interface for accessing Alpha Va
 Install from PyPI (when published):
 
 ```bash
-pip install alphavantage-cli
+pip install alpha-grabber
