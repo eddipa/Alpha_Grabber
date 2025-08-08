@@ -3,12 +3,12 @@
 import pytest
 from unittest.mock import Mock, patch
 
-from alphavantage_cli.client import AlphaVantageClient
-from alphavantage_cli.endpoints.stocks import StocksEndpoint
-from alphavantage_cli.endpoints.forex import ForexEndpoint
-from alphavantage_cli.endpoints.crypto import CryptoEndpoint
-from alphavantage_cli.endpoints.indicators import IndicatorsEndpoint
-from alphavantage_cli.exceptions import AlphaVantageError
+from alpha_grabber.client import AlphaVantageClient
+from alpha_grabber.endpoints.stocks import StocksEndpoint
+from alpha_grabber.endpoints.forex import ForexEndpoint
+from alpha_grabber.endpoints.crypto import CryptoEndpoint
+from alpha_grabber.endpoints.indicators import IndicatorsEndpoint
+from alpha_grabber.exceptions import AlphaVantageError
 
 
 class TestStocksEndpoint:
@@ -29,7 +29,7 @@ class TestStocksEndpoint:
         }
         self.client._make_request.return_value = mock_data
         
-        with patch('alphavantage_cli.endpoints.stocks.format_output') as mock_format:
+        with patch('alpha_grabber.endpoints.stocks.format_output') as mock_format:
             mock_format.return_value = mock_data["Global Quote"]
             
             result = self.endpoint.get_quote("AAPL")
@@ -60,7 +60,7 @@ class TestStocksEndpoint:
         }
         self.client._make_request.return_value = mock_data
         
-        with patch('alphavantage_cli.endpoints.stocks.format_output') as mock_format:
+        with patch('alpha_grabber.endpoints.stocks.format_output') as mock_format:
             mock_format.return_value = mock_data["Time Series (Daily)"]
             
             result = self.endpoint.get_daily("AAPL")
@@ -76,7 +76,7 @@ class TestStocksEndpoint:
         mock_data = {"Time Series (Daily)": {}}
         self.client._make_request.return_value = mock_data
         
-        with patch('alphavantage_cli.endpoints.stocks.format_output'):
+        with patch('alpha_grabber.endpoints.stocks.format_output'):
             self.endpoint.get_daily("AAPL", adjusted=False)
             
             self.client._make_request.assert_called_once_with({
@@ -97,7 +97,7 @@ class TestStocksEndpoint:
         }
         self.client._make_request.return_value = mock_data
         
-        with patch('alphavantage_cli.endpoints.stocks.format_output') as mock_format:
+        with patch('alpha_grabber.endpoints.stocks.format_output') as mock_format:
             mock_format.return_value = mock_data["Time Series (5min)"]
             
             result = self.endpoint.get_intraday("AAPL", interval="5min")
@@ -130,7 +130,7 @@ class TestForexEndpoint:
         }
         self.client._make_request.return_value = mock_data
         
-        with patch('alphavantage_cli.endpoints.forex.format_output') as mock_format:
+        with patch('alpha_grabber.endpoints.forex.format_output') as mock_format:
             mock_format.return_value = mock_data["Realtime Currency Exchange Rate"]
             
             result = self.endpoint.get_exchange_rate("USD", "EUR")
@@ -153,7 +153,7 @@ class TestForexEndpoint:
         }
         self.client._make_request.return_value = mock_data
         
-        with patch('alphavantage_cli.endpoints.forex.format_output') as mock_format:
+        with patch('alpha_grabber.endpoints.forex.format_output') as mock_format:
             mock_format.return_value = mock_data["Time Series FX (Daily)"]
             
             result = self.endpoint.get_daily("USD", "EUR")
@@ -185,7 +185,7 @@ class TestCryptoEndpoint:
         }
         self.client._make_request.return_value = mock_data
         
-        with patch('alphavantage_cli.endpoints.crypto.format_output') as mock_format:
+        with patch('alpha_grabber.endpoints.crypto.format_output') as mock_format:
             mock_format.return_value = mock_data["Realtime Currency Exchange Rate"]
             
             result = self.endpoint.get_exchange_rate("BTC", "USD")
@@ -208,7 +208,7 @@ class TestCryptoEndpoint:
         }
         self.client._make_request.return_value = mock_data
         
-        with patch('alphavantage_cli.endpoints.crypto.format_output') as mock_format:
+        with patch('alpha_grabber.endpoints.crypto.format_output') as mock_format:
             mock_format.return_value = mock_data["Time Series (Digital Currency Daily)"]
             
             result = self.endpoint.get_daily("BTC", "USD")
@@ -239,7 +239,7 @@ class TestIndicatorsEndpoint:
         }
         self.client._make_request.return_value = mock_data
         
-        with patch('alphavantage_cli.endpoints.indicators.format_output') as mock_format:
+        with patch('alpha_grabber.endpoints.indicators.format_output') as mock_format:
             mock_format.return_value = mock_data["Technical Analysis: SMA"]
             
             result = self.endpoint.get_sma("AAPL", time_period=20)
@@ -277,7 +277,7 @@ class TestIndicatorsEndpoint:
         }
         self.client._make_request.return_value = mock_data
         
-        with patch('alphavantage_cli.endpoints.indicators.format_output') as mock_format:
+        with patch('alpha_grabber.endpoints.indicators.format_output') as mock_format:
             mock_format.return_value = mock_data["Technical Analysis: RSI"]
             
             result = self.endpoint.get_indicator(

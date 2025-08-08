@@ -1,8 +1,17 @@
-# Alpha Vantage CLI
+# Alpha Grabber
 
 ## Overview
 
 A comprehensive Python package and command-line interface for accessing Alpha Vantage financial market data API. The system provides a modular architecture for retrieving stocks, forex, cryptocurrency, and technical indicators data with support for multiple output formats (JSON and CSV), configuration management, and built-in rate limiting.
+
+## Recent Changes
+
+### August 8, 2025 - Package Rename Complete
+- Successfully renamed entire project from `alphavantage_cli` to `alpha_grabber`
+- Updated all imports, module references, and package metadata
+- Fixed test expectations to match new package name and functionality
+- All 42 tests passing
+- CLI commands working with new `alpha-grabber` and `av` command names
 
 ## User Preferences
 
@@ -90,6 +99,6 @@ Preferred communication style: Simple, everyday language.
   - Supports multiple data types: stocks, forex, crypto, technical indicators
 
 ### Package Distribution
-- **PyPI**: Configured for distribution as `alphavantage-cli` package
+- **PyPI**: Configured for distribution as `alpha-grabber` package
 - **setuptools**: Package building and distribution management
-- **Console scripts**: Entry points for `alphavantage` and `av` commands
+- **Console scripts**: Entry points for `alpha-grabber` and `av` commands

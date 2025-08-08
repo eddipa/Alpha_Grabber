@@ -1,4 +1,4 @@
-"""Command-line interface for Alpha Vantage CLI."""
+"""Command-line interface for Alpha Grabber."""
 
 import sys
 import json
@@ -48,7 +48,7 @@ def get_client(ctx):
 )
 @click.pass_context
 def cli(ctx, api_key: Optional[str], config_file: Optional[str], rate_limit: float):
-    """Alpha Vantage CLI - Access financial market data from the command line."""
+    """Alpha Grabber - Access financial market data from the command line."""
     # Store connection parameters for deferred client creation
     ctx.ensure_object(dict)
     ctx.obj = {
@@ -433,7 +433,7 @@ def get_overview(ctx, symbol: str, output_format: str):
 def version(ctx):
     """Show version information."""
     from . import __version__, __description__
-    click.echo(f"Alpha Vantage CLI v{__version__}")
+    click.echo(f"Alpha Grabber v{__version__}")
     click.echo(__description__)
 
 

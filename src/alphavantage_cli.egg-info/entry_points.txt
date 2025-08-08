@@ -1,3 +1,0 @@
-[console_scripts]
-alphavantage = alphavantage_cli.cli:cli
-av = alphavantage_cli.cli:cli

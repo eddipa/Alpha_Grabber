@@ -1,4 +1,4 @@
-"""Alpha Vantage CLI - Python package for Alpha Vantage financial market data API."""
+"""Alpha Grabber - Python package for Alpha Vantage financial market data API."""
 
 from .client import AlphaVantageClient
 from .exceptions import (
@@ -10,7 +10,7 @@ from .exceptions import (
 )
 
 __version__ = "1.0.0"
-__author__ = "Alpha Vantage CLI Team"
+__author__ = "Alpha Grabber Team"
 __email__ = "support@example.com"
 __description__ = "Python package and CLI for Alpha Vantage financial market data API"
 
@@ -25,6 +25,6 @@ __all__ = [
 ]
 
 # Package metadata
-__package_name__ = "alphavantage-cli"
+__package_name__ = "alpha-grabber"
 __license__ = "MIT"
-__url__ = "https://github.com/example/alphavantage-cli"
+__url__ = "https://github.com/example/alpha-grabber"

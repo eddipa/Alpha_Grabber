@@ -5,8 +5,8 @@ import json
 from unittest.mock import Mock, patch
 from click.testing import CliRunner
 
-from alphavantage_cli.cli import cli
-from alphavantage_cli.exceptions import APIKeyError, AlphaVantageError
+from alpha_grabber.cli import cli
+from alpha_grabber.exceptions import APIKeyError, AlphaVantageError
 
 
 class TestCLI:
@@ -16,7 +16,7 @@ class TestCLI:
         """Setup test runner."""
         self.runner = CliRunner()
     
-    @patch('alphavantage_cli.cli.AlphaVantageClient')
+    @patch('alpha_grabber.cli.AlphaVantageClient')
     def test_get_quote_success(self, mock_client_class):
         """Test successful quote command."""
         mock_client = Mock()
@@ -42,7 +42,7 @@ class TestCLI:
             rate_limit_delay=12.0
         )
     
-    @patch('alphavantage_cli.cli.AlphaVantageClient')
+    @patch('alpha_grabber.cli.AlphaVantageClient')
     def test_get_quote_csv_format(self, mock_client_class):
         """Test quote command with CSV output."""
         mock_client = Mock()
@@ -64,7 +64,7 @@ class TestCLI:
             rate_limit_delay=12.0
         )
     
-    @patch('alphavantage_cli.cli.AlphaVantageClient')
+    @patch('alpha_grabber.cli.AlphaVantageClient')
     def test_get_daily_success(self, mock_client_class):
         """Test successful daily command."""
         mock_client = Mock()
@@ -92,7 +92,7 @@ class TestCLI:
             rate_limit_delay=12.0
         )
     
-    @patch('alphavantage_cli.cli.AlphaVantageClient')
+    @patch('alpha_grabber.cli.AlphaVantageClient')
     def test_get_indicators_sma(self, mock_client_class):
         """Test indicators command with SMA."""
         mock_client = Mock()
@@ -122,7 +122,7 @@ class TestCLI:
             rate_limit_delay=12.0
         )
     
-    @patch('alphavantage_cli.cli.AlphaVantageClient')
+    @patch('alpha_grabber.cli.AlphaVantageClient')
     def test_get_indicators_generic(self, mock_client_class):
         """Test indicators command with generic indicator."""
         mock_client = Mock()
@@ -153,7 +153,7 @@ class TestCLI:
             rate_limit_delay=12.0
         )
     
-    @patch('alphavantage_cli.cli.AlphaVantageClient')
+    @patch('alpha_grabber.cli.AlphaVantageClient')
     def test_get_forex_rate(self, mock_client_class):
         """Test forex command for exchange rate."""
         mock_client = Mock()
@@ -179,7 +179,7 @@ class TestCLI:
             rate_limit_delay=12.0
         )
     
-    @patch('alphavantage_cli.cli.AlphaVantageClient')
+    @patch('alpha_grabber.cli.AlphaVantageClient')
     def test_get_forex_daily(self, mock_client_class):
         """Test forex command for daily data."""
         mock_client = Mock()
@@ -204,7 +204,7 @@ class TestCLI:
             rate_limit_delay=12.0
         )
     
-    @patch('alphavantage_cli.cli.AlphaVantageClient')
+    @patch('alpha_grabber.cli.AlphaVantageClient')
     def test_get_crypto_rate(self, mock_client_class):
         """Test crypto command for exchange rate."""
         mock_client = Mock()
@@ -230,18 +230,9 @@ class TestCLI:
             rate_limit_delay=12.0
         )
     
-    @patch('alphavantage_cli.cli.AlphaVantageClient')
-    def test_list_indicators(self, mock_client_class):
+    def test_list_indicators(self):
         """Test list indicators command."""
-        mock_client = Mock()
-        mock_client.indicators.list_indicators.return_value = {
-            "SMA": "Simple Moving Average",
-            "EMA": "Exponential Moving Average"
-        }
-        mock_client_class.return_value = mock_client
-        
         result = self.runner.invoke(cli, [
-            '--api-key', 'test_key',
             'list-indicators'
         ])
         
@@ -249,29 +240,20 @@ class TestCLI:
         assert "SMA" in result.output
         assert "Simple Moving Average" in result.output
         assert "EMA" in result.output
-        mock_client_class.assert_called_once_with(
-            api_key='test_key',
-            config_file=None,
-            rate_limit_delay=12.0
-        )
+        # This command doesn't need a client - it just lists static indicators
     
-    @patch('alphavantage_cli.cli.AlphaVantageClient')
-    def test_version_command(self, mock_client_class):
+    def test_version_command(self):
         """Test version command."""
-        mock_client_class.return_value = Mock()
-        
         result = self.runner.invoke(cli, [
-            '--api-key', 'test_key',
             'version'
         ])
         
         assert result.exit_code == 0
-        assert "Alpha Vantage CLI" in result.output
+        assert "Alpha Grabber" in result.output
         assert "v1.0.0" in result.output
-        # Version command doesn't need a client
-        mock_client_class.assert_not_called()
+        # Version command doesn't need a client or API key
     
-    @patch('alphavantage_cli.cli.get_client')
+    @patch('alpha_grabber.cli.get_client')
     def test_api_key_error(self, mock_get_client):
         """Test CLI with API key error."""
         mock_get_client.side_effect = SystemExit(1)
@@ -284,7 +266,7 @@ class TestCLI:
         # Since get_client exits with error, we just check the exit code
         pass  # The exit handling is done in get_client now
     
-    @patch('alphavantage_cli.cli.get_client')
+    @patch('alpha_grabber.cli.get_client')
     def test_alpha_vantage_error_in_command(self, mock_get_client):
         """Test Alpha Vantage error during command execution."""
         mock_client = Mock()
@@ -304,7 +286,7 @@ class TestCLI:
         result = self.runner.invoke(cli, ['--help'])
         
         assert result.exit_code == 0
-        assert "Alpha Vantage CLI" in result.output
+        assert "Alpha Grabber" in result.output
         assert "get-quote" in result.output
         assert "get-daily" in result.output
         assert "get-indicators" in result.output

@@ -13,7 +13,7 @@ def read_readme():
     return "Alpha Vantage CLI - Command-line interface for Alpha Vantage API"
 
 setup(
-    name="alphavantage-cli",
+    name="alpha-grabber",
     version="1.0.0",
     author="Alpha Vantage CLI Team",
     author_email="support@example.com",
@@ -56,8 +56,8 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "alphavantage=alphavantage_cli.cli:cli",
-            "av=alphavantage_cli.cli:cli",
+            "alpha-grabber=alpha_grabber.cli:cli",
+            "ag=alpha_grabber.cli:cli",
         ],
     },
     project_urls={

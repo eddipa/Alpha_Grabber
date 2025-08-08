@@ -10,7 +10,7 @@ resolution-markers = [
 ]
 
 [[package]]
-name = "alphavantage-cli"
+name = "alpha-grabber"
 version = "1.0.0"
 source = { editable = "." }
 dependencies = [

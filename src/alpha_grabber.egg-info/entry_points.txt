@@ -1,0 +1,3 @@
+[console_scripts]
+ag = alpha_grabber.cli:cli
+alpha-grabber = alpha_grabber.cli:cli

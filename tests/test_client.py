@@ -5,8 +5,8 @@ import os
 from unittest.mock import Mock, patch, MagicMock
 import requests
 
-from alphavantage_cli.client import AlphaVantageClient
-from alphavantage_cli.exceptions import (
+from alpha_grabber.client import AlphaVantageClient
+from alpha_grabber.exceptions import (
     APIKeyError,
     RateLimitError,
     InvalidSymbolError,

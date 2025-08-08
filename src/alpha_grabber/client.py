@@ -71,7 +71,7 @@ class AlphaVantageClient:
         # Initialize session for connection pooling
         self.session = requests.Session()
         self.session.headers.update({
-            "User-Agent": "alphavantage-cli/1.0.0",
+            "User-Agent": "alpha-grabber/1.0.0",
             "Accept": "application/json",
         })
         
