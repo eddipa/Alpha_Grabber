@@ -12,6 +12,23 @@ from .exceptions import AlphaVantageError, APIKeyError, RateLimitError
 from .endpoints.indicators import IndicatorsEndpoint
 
 
+def get_client(ctx):
+    """Create client from deferred parameters."""
+    try:
+        return AlphaVantageClient(
+            api_key=ctx.obj['api_key'],
+            config_file=ctx.obj['config_file'],
+            rate_limit_delay=ctx.obj['rate_limit_delay']
+        )
+    except APIKeyError as e:
+        click.echo(f"Error: {e}", err=True)
+        click.echo("\nTo get an API key, visit: https://www.alphavantage.co/support/#api-key", err=True)
+        sys.exit(1)
+    except AlphaVantageError as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
 @click.group()
 @click.option(
     "--api-key",
@@ -32,20 +49,13 @@ from .endpoints.indicators import IndicatorsEndpoint
 @click.pass_context
 def cli(ctx, api_key: Optional[str], config_file: Optional[str], rate_limit: float):
     """Alpha Vantage CLI - Access financial market data from the command line."""
-    try:
-        client = AlphaVantageClient(
-            api_key=api_key,
-            config_file=config_file,
-            rate_limit_delay=rate_limit
-        )
-        ctx.obj = client
-    except APIKeyError as e:
-        click.echo(f"Error: {e}", err=True)
-        click.echo("\nTo get an API key, visit: https://www.alphavantage.co/support/#api-key", err=True)
-        sys.exit(1)
-    except AlphaVantageError as e:
-        click.echo(f"Error: {e}", err=True)
-        sys.exit(1)
+    # Store connection parameters for deferred client creation
+    ctx.ensure_object(dict)
+    ctx.obj = {
+        'api_key': api_key,
+        'config_file': config_file,
+        'rate_limit_delay': rate_limit
+    }
 
 
 @cli.command()
@@ -56,9 +66,10 @@ def cli(ctx, api_key: Optional[str], config_file: Optional[str], rate_limit: flo
     default="json",
     help="Output format"
 )
-@click.pass_obj
-def get_quote(client: AlphaVantageClient, symbol: str, output_format: str):
+@click.pass_context
+def get_quote(ctx, symbol: str, output_format: str):
     """Get real-time stock quote."""
+    client = get_client(ctx)
     try:
         data = client.stocks.get_quote(symbol, output_format)
         
@@ -91,15 +102,16 @@ def get_quote(client: AlphaVantageClient, symbol: str, output_format: str):
     default="compact",
     help="Data size (compact=latest 100 points, full=all available)"
 )
-@click.pass_obj
+@click.pass_context
 def get_daily(
-    client: AlphaVantageClient,
+    ctx,
     symbol: str,
     adjusted: bool,
     output_format: str,
     outputsize: str
 ):
     """Get daily time series data."""
+    client = get_client(ctx)
     try:
         data = client.stocks.get_daily(
             symbol,
@@ -143,9 +155,9 @@ def get_daily(
     default="compact",
     help="Data size"
 )
-@click.pass_obj
+@click.pass_context
 def get_intraday(
-    client: AlphaVantageClient,
+    ctx,
     symbol: str,
     interval: str,
     adjusted: bool,
@@ -153,6 +165,7 @@ def get_intraday(
     outputsize: str
 ):
     """Get intraday time series data."""
+    client = get_client(ctx)
     try:
         data = client.stocks.get_intraday(
             symbol,
@@ -203,9 +216,9 @@ def get_intraday(
     default="json",
     help="Output format"
 )
-@click.pass_obj
+@click.pass_context
 def get_indicators(
-    client: AlphaVantageClient,
+    ctx,
     symbol: str,
     indicator: str,
     interval: str,
@@ -214,6 +227,7 @@ def get_indicators(
     output_format: str
 ):
     """Get technical indicators."""
+    client = get_client(ctx)
     try:
         # Map common indicators to their specific methods
         indicator_upper = indicator.upper()
@@ -292,15 +306,16 @@ def get_indicators(
     default=False,
     help="Get daily time series instead of exchange rate"
 )
-@click.pass_obj
+@click.pass_context
 def get_forex(
-    client: AlphaVantageClient,
+    ctx,
     from_currency: str,
     to_currency: str,
     output_format: str,
     daily: bool
 ):
     """Get forex exchange rates or time series data."""
+    client = get_client(ctx)
     try:
         if daily:
             data = client.forex.get_daily(
@@ -339,15 +354,16 @@ def get_forex(
     default=False,
     help="Get daily time series instead of exchange rate"
 )
-@click.pass_obj
+@click.pass_context
 def get_crypto(
-    client: AlphaVantageClient,
+    ctx,
     symbol: str,
     market: str,
     output_format: str,
     daily: bool
 ):
     """Get cryptocurrency data."""
+    client = get_client(ctx)
     try:
         if daily:
             data = client.crypto.get_daily(
@@ -373,9 +389,10 @@ def get_crypto(
 
 
 @cli.command()
-@click.pass_obj
-def list_indicators(client: AlphaVantageClient):
+@click.pass_context
+def list_indicators(ctx):
     """List available technical indicators."""
+    client = get_client(ctx)
     indicators = client.indicators.list_indicators()
     
     click.echo("Available Technical Indicators:")
@@ -393,9 +410,10 @@ def list_indicators(client: AlphaVantageClient):
     default="json",
     help="Output format"
 )
-@click.pass_obj
-def get_overview(client: AlphaVantageClient, symbol: str, output_format: str):
+@click.pass_context
+def get_overview(ctx, symbol: str, output_format: str):
     """Get company overview and fundamental data."""
+    client = get_client(ctx)
     try:
         data = client.stocks.get_overview(symbol, output_format)
         

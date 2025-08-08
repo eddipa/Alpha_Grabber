@@ -66,7 +66,7 @@ class Config:
         """
         try:
             return self.config.get(section, key)
-        except (KeyError, ValueError):
+        except Exception:
             return default
     
     def get_bool(self, key: str, default: bool = False, section: str = "DEFAULT") -> bool:

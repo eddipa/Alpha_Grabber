@@ -52,20 +52,23 @@ class TestAlphaVantageClient:
     @patch('time.time')
     def test_rate_limiting(self, mock_time, mock_sleep):
         """Test rate limiting functionality."""
-        mock_time.side_effect = [0, 5, 15]  # Current time progression
+        # First test - should sleep full delay time  
+        mock_time.side_effect = [0.0, 10.0]  # start_time, end_time
         
         client = AlphaVantageClient(api_key="test_key", rate_limit_delay=10.0)
-        client._last_request_time = 0
+        client._last_request_time = 0.0
         
-        # First call should sleep for remaining time
         client._rate_limit()
         mock_sleep.assert_called_with(10.0)
         
-        # Second call should sleep for less time
-        client._last_request_time = 5
-        mock_time.side_effect = [5, 7, 17]
+        # Second test - should sleep remaining time
+        mock_time.reset_mock()
+        mock_sleep.reset_mock()
+        mock_time.side_effect = [3.0, 13.0]  # 3 seconds after last request
+        
+        client._last_request_time = 0.0  # Last request was at time 0
         client._rate_limit()
-        mock_sleep.assert_called_with(8.0)
+        mock_sleep.assert_called_with(7.0)  # Should sleep 10 - 3 = 7 seconds
     
     def test_make_request_success(self):
         """Test successful API request."""

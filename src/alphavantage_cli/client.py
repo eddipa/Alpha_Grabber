@@ -188,7 +188,7 @@ class AlphaVantageClient:
         # Check for rate limiting note
         if "Note" in data:
             note_msg = data["Note"]
-            if "rate limit" in note_msg.lower() or "frequent" in note_msg.lower():
+            if "rate limit" in note_msg.lower() or "frequent" in note_msg.lower() or "requests per day" in note_msg.lower():
                 raise RateLimitError(note_msg)
             else:
                 raise AlphaVantageError(note_msg)
