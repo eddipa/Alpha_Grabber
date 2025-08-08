@@ -1,0 +1,50 @@
+[DEFAULT]
+# Alpha Vantage API Configuration
+# Get your free API key at: https://www.alphavantage.co/support/#api-key
+api_key = YOUR_API_KEY_HERE
+
+# API Base URL (usually no need to change)
+base_url = https://www.alphavantage.co/query
+
+# Rate limiting settings
+# Free tier: 25 requests per day (recommended: 12 seconds between requests)
+# Premium tiers have higher limits
+rate_limit_delay = 12.0
+
+# Default output format (json or csv)
+output_format = json
+
+# Request timeout in seconds
+timeout = 30.0
+
+# Optional: Custom User-Agent
+# user_agent = my-app/1.0
+
+[STOCKS]
+# Stock-specific settings
+default_outputsize = compact
+default_adjusted = true
+
+[FOREX]
+# Forex-specific settings
+default_outputsize = compact
+
+[CRYPTO]
+# Cryptocurrency-specific settings
+default_market = USD
+
+[INDICATORS]
+# Technical indicators settings
+default_interval = daily
+default_time_period = 20
+default_series_type = close
+
+# MACD settings
+macd_fastperiod = 12
+macd_slowperiod = 26
+macd_signalperiod = 9
+
+# Bollinger Bands settings
+bbands_nbdevup = 2
+bbands_nbdevdn = 2
+bbands_matype = 0
