@@ -58,6 +58,7 @@ setup(
         "console_scripts": [
             "alpha-grabber=alpha_grabber.cli:cli",
             "ag=alpha_grabber.cli:cli",
+            "alpha_grabber=alpha_grabber.cli:cli",
         ],
     },
     project_urls={

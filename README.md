@@ -54,6 +54,13 @@ Set your API key using one of these methods:
 
 ## Usage
 
+The CLI can be invoked using any of these commands:
+- `alpha-grabber` (full name)
+- `ag` (short version) 
+- `alpha_grabber` (underscore version)
+
+All commands work identically - use whichever you prefer!
+
 ### Basic Help
 
 ```bash
@@ -140,8 +147,9 @@ alpha-grabber --rate-limit 5.0 get-quote AAPL
 # Use configuration file
 alpha-grabber --config-file /path/to/config.ini get-quote AAPL
 
-# Use shorthand command (av instead of alpha-grabber)
-av get-quote AAPL
+# Use shorthand commands
+ag get-quote AAPL
+alpha_grabber get-quote AAPL
 ```
 
 ## Output Formats

@@ -51,6 +51,7 @@ dev = [
 [project.scripts]
 alpha-grabber = "alpha_grabber.cli:cli"
 ag = "alpha_grabber.cli:cli"
+alpha_grabber = "alpha_grabber.cli:cli"
 
 [project.urls]
 Homepage = "https://github.com/example/alphavantage-cli"
